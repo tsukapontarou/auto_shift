@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shift Auto</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Shift Auto</p>
+      <h1>アルバイトの週間シフト表を作るための最小土台</h1>
+      <p class="lead">
+        サンプルデータを使って、1週間分の定義済みシフトに対する希望入力と自動割り当て結果を確認するための最小版です。
+        希望を反映した後にボタンを押すと、自動割り当てを実行します。
+      </p>
+    </header>
+
+    <nav class="view-switcher" aria-label="画面切替">
+      <button id="admin-view-button" class="view-button is-active" type="button" aria-controls="admin-view" aria-pressed="true">
+        管理者画面
+      </button>
+      <button id="staff-view-button" class="view-button" type="button" aria-controls="staff-view" aria-pressed="false">
+        スタッフ入力画面
+      </button>
+    </nav>
+
+    <div id="admin-view" class="view-panel">
+      <section class="panel">
+        <div class="section-heading">
+          <h2>管理者画面</h2>
+          <p>シフト定義、必要人数、シフト生成結果を管理します。変更は「設定を適用する」まで本体データに反映されません。</p>
+        </div>
+        <div id="status-message" class="status status-info">
+          サンプルデータを読み込みました。必要なら設定を編集し、シフト生成を押してください。
+        </div>
+        <button id="generate-button" class="button" type="button">シフト生成</button>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <h2>シフト定義編集</h2>
+          <p>境界時刻を30分刻みで編集します。隣り合う境界から定義済みシフトを自動生成します。</p>
+        </div>
+        <div id="shift-boundary-editor" class="boundary-editor" aria-live="polite"></div>
+        <div class="editor-actions">
+          <button id="add-boundary-button" class="button button-secondary" type="button">境界を追加</button>
+        </div>
+        <div id="shift-preview" class="shift-preview" aria-live="polite"></div>
+        <div id="admin-config-status" class="status status-info">
+          下書き設定を編集できます。適用するまで現在のシフト表には反映されません。
+        </div>
+        <div class="editor-actions">
+          <button id="apply-settings-button" class="button" type="button">設定を適用する</button>
+          <button id="reset-settings-button" class="button button-light" type="button">下書きを元に戻す</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <h2>必要人数編集</h2>
+          <p>曜日 × 定義済みシフトの必要人数を0以上の整数で編集します。シフト定義の下書きに追従します。</p>
+        </div>
+        <div id="requirements-editor" class="requirements-editor" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <h2>サンプルスタッフ一覧</h2>
+          <p><code>sample-data.js</code> に定義したスタッフ情報を閲覧できます。</p>
+        </div>
+        <div id="staff-list" class="staff-list" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <h2>1週間の必要人数と生成結果</h2>
+          <p>曜日 × 定義済みシフトの枠に、必要人数、割り当てたスタッフ名、30分刻みで集計した時間帯別不足を表示します。</p>
+        </div>
+        <div class="table-wrap">
+          <table id="requirements-table" class="requirements-table">
+            <caption class="sr-only">1週間分の必要人数と生成結果</caption>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="staff-view" class="view-panel" hidden>
+      <section class="panel staff-input-panel">
+        <div class="section-heading">
+          <h2>スタッフ入力画面</h2>
+          <p>
+            スタッフを選び、曜日ごとの実時刻入力を定義済みシフトへ丸めて反映できます。
+            その後で、各セルをクリックして <strong>不可 → 可 → 希望</strong> の順に微調整できます。
+          </p>
+        </div>
+        <div class="editor-controls">
+          <label class="field-label" for="staff-select">編集するスタッフ</label>
+          <select id="staff-select" class="select"></select>
+        </div>
+        <p class="editor-note">
+          現在は実時刻入力を、有効な定義済みシフトへ丸めて扱います。
+          シフト定義が管理者画面で変更された場合、手動のグリッド微調整は時刻入力から再計算されます。
+        </p>
+        <div id="time-range-editor" class="time-range-editor" aria-live="polite"></div>
+        <div class="legend" aria-label="入力状態の凡例">
+          <span class="legend-item"><span class="legend-chip state-blocked">不可</span> 勤務不可</span>
+          <span class="legend-item"><span class="legend-chip state-available">可</span> 勤務可能</span>
+          <span class="legend-item"><span class="legend-chip state-preferred">希望</span> 勤務可能かつ優先希望</span>
+        </div>
+        <div id="preference-grid" class="preference-grid" aria-live="polite"></div>
+        <div class="editor-actions">
+          <button id="save-preferences-button" class="button button-secondary" type="button">希望を反映する</button>
+        </div>
+        <div id="preference-status" class="status status-info">
+          選択したスタッフの希望を編集できます。保存すると次回のシフト生成に反映されます。
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="sample-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
