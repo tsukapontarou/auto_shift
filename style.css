@@ -121,40 +121,55 @@ body {
   background: #7a6a58;
 }
 
+.button-danger {
+  background: #a33d2f;
+}
+
 .button:hover {
   filter: brightness(1.05);
 }
 
-.view-switcher {
-  display: inline-flex;
+.button:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+  opacity: 0.58;
+}
+
+.page-nav {
+  display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 6px;
-  margin: 0 0 18px;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--panel-border);
   border-radius: 999px;
-  background: rgba(255, 250, 242, 0.78);
-  box-shadow: var(--shadow);
-}
-
-.view-button {
-  appearance: none;
-  border: 0;
-  border-radius: 999px;
   padding: 10px 16px;
-  background: transparent;
-  color: var(--muted);
+  background: #fffdf8;
+  color: var(--ink);
   font-weight: 700;
-  cursor: pointer;
+  text-decoration: none;
 }
 
-.view-button.is-active {
+.nav-link.primary {
   background: var(--accent);
   color: #fff;
+  border-color: var(--accent);
 }
 
-.view-panel[hidden] {
-  display: none;
+.notice-list {
+  margin: 0;
+  padding-left: 1.4rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.danger-zone {
+  border-color: #d88a6a;
 }
 
 .editor-controls {

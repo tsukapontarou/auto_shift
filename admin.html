@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shift Auto - 管理者画面</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Shift Auto</p>
+      <h1>管理者画面</h1>
+      <p class="lead">
+        シフト定義、必要人数、スタッフ希望を確認し、現在有効なデータでシフト生成を実行します。
+      </p>
+      <nav class="page-nav" aria-label="ページ移動">
+        <a class="nav-link" href="index.html">トップ</a>
+        <a class="nav-link" href="staff.html">スタッフ入力画面</a>
+      </nav>
+    </header>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>状態</h2>
+        <p>読み込み元、保存結果、設定エラー、シフト生成サマリを表示します。</p>
+      </div>
+      <div id="data-status" class="status status-info">データを読み込み中です。</div>
+      <div id="status-message" class="status status-info">現在有効なデータを確認しています。</div>
+      <button id="generate-button" class="button" type="button">シフト生成</button>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>シフト定義編集</h2>
+        <p>境界時刻を 30 分刻み、昇順、重複なしで編集します。隣り合う境界から定義済みシフトを生成します。</p>
+      </div>
+      <div id="shift-boundary-editor" class="boundary-editor" aria-live="polite"></div>
+      <div class="editor-actions">
+        <button id="add-boundary-button" class="button button-secondary" type="button">境界を追加</button>
+      </div>
+      <div id="shift-preview" class="shift-preview" aria-live="polite"></div>
+      <div id="admin-config-status" class="status status-info">下書きを確認しています。</div>
+      <div class="editor-actions">
+        <button id="apply-settings-button" class="button" type="button">設定を適用する</button>
+        <button id="reset-settings-button" class="button button-light" type="button">下書きを元に戻す</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>必要人数編集</h2>
+        <p>曜日ごと、定義済みシフトごとの必要人数を 0 以上の整数で編集します。</p>
+      </div>
+      <div id="requirements-editor" class="requirements-editor" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>スタッフ一覧</h2>
+        <p>現在有効なデータに含まれるスタッフ、時刻入力、勤務可能枠、希望枠を表示します。</p>
+      </div>
+      <div id="staff-list" class="staff-list" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>必要人数と生成結果</h2>
+        <p>シフト生成後に割り当てスタッフ、枠単位の不足、時間帯別不足を表示します。</p>
+      </div>
+      <div class="table-wrap">
+        <table id="requirements-table" class="requirements-table">
+          <caption class="sr-only">必要人数とシフト生成結果</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel danger-zone">
+      <div class="section-heading">
+        <h2>初期データに戻す</h2>
+        <p>同じブラウザ内の localStorage 保存データを削除し、sample-data.js の状態で表示し直します。</p>
+      </div>
+      <button id="reset-data-button" class="button button-danger" type="button">初期データに戻す</button>
+    </section>
+  </main>
+
+  <script src="sample-data.js"></script>
+  <script src="shift-core.js"></script>
+  <script src="storage.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shift Auto - スタッフ入力画面</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Shift Auto</p>
+      <h1>スタッフ入力画面</h1>
+      <p class="lead">
+        スタッフを選び、曜日別の勤務可能時刻と希望状態を入力します。反映後は同じブラウザ内の localStorage に保存されます。
+      </p>
+      <nav class="page-nav" aria-label="ページ移動">
+        <a class="nav-link" href="index.html">トップ</a>
+        <a class="nav-link" href="admin.html">管理者画面</a>
+      </nav>
+    </header>
+
+    <section class="panel staff-input-panel">
+      <div class="section-heading">
+        <h2>希望入力</h2>
+        <p>時刻入力は現在有効なシフト定義全体の開始から終了までの範囲で、30 分刻みで入力します。</p>
+      </div>
+
+      <div id="data-status" class="status status-info">データを読み込み中です。</div>
+
+      <div class="editor-controls">
+        <label class="field-label" for="staff-select">編集するスタッフ</label>
+        <select id="staff-select" class="select"></select>
+      </div>
+
+      <div id="time-range-editor" class="time-range-editor" aria-live="polite"></div>
+
+      <div class="legend" aria-label="入力状態の凡例">
+        <span class="legend-item"><span class="legend-chip state-blocked">不可</span>勤務不可</span>
+        <span class="legend-item"><span class="legend-chip state-available">可</span>勤務可能</span>
+        <span class="legend-item"><span class="legend-chip state-preferred">希望</span>勤務可能かつ優先希望</span>
+      </div>
+
+      <div id="preference-grid" class="preference-grid" aria-live="polite"></div>
+
+      <div class="editor-actions">
+        <button id="save-preferences-button" class="button button-secondary" type="button">希望を反映する</button>
+      </div>
+
+      <div id="preference-status" class="status status-info">
+        スタッフ希望を確認しています。
+      </div>
+    </section>
+  </main>
+
+  <script src="sample-data.js"></script>
+  <script src="shift-core.js"></script>
+  <script src="storage.js"></script>
+  <script src="staff.js"></script>
+</body>
+</html>
